@@ -6,7 +6,7 @@ import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
-import { auth } from './firebase/firebase.utils';
+import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
 // In case of "<Route exact...",
 // a page will be shown if a URI user specified matches a path.
@@ -23,13 +23,38 @@ class App extends React.Component {
   }
 
   componentDidMount() {
+    this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+      if (userAuth) {
+        const userRef = await createUserProfileDocument(userAuth);
+
+        userRef.onSnapshot(snapShot => {
+          //console.log(snapShot.data());
+          this.setState(
+            {
+              currentUser: {
+                id: snapShot.id,
+                ...snapShot.data(),
+              },
+            },
+            () => {
+              // TODO: comment out before publishing
+              console.log(this.state);
+            }
+          );
+        });
+      } else {
+        // set a null in case of no user logged in.
+        this.setState({ currentUser: userAuth });
+      }
+    });
+
     // Firebase keeps track of the current user logged in.
     // When a state is changed such as logging in a new user/logging out,
     // this method is called and our State will be updated.
-    auth.onAuthStateChanged(user => {
-      this.setState({ currentUser: user });
-      //console.log(user);
-    });
+    // auth.onAuthStateChanged(user => {
+    //   this.setState({ currentUser: user });
+    //   //console.log(user);
+    // });
   }
 
   unsubscribeFromAuth = null;
