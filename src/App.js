@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import './App.css';
@@ -11,11 +11,7 @@ import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 import { setCurrectUser } from './redux/user/user.actions';
 
-// In case of "<Route exact...",
-// a page will be shown if a URI user specified matches a path.
-// If no exact, multiple renders will be conducted matching all patterns.
-//   e.g. "/"" and "/hats" if a URI is /hats.
-// If you want to use a variable, specify :variable in a path. e.g. /hats/:id
+//
 class App extends React.Component {
   // constructor(props) {
   //   super(props);
@@ -60,6 +56,11 @@ class App extends React.Component {
     this.unsubscribeFromAuth();
   }
 
+  // In case of "<Route exact...",
+  // a page will be shown if a URI user specified matches a path.
+  // If no exact, multiple renders will be conducted matching all patterns.
+  //   e.g. "/"" and "/hats" if a URI is /hats.
+  // If you want to use a variable, specify :variable in a path. e.g. /hats/:id
   render() {
     return (
       <div>
@@ -67,16 +68,30 @@ class App extends React.Component {
         <Switch>
           <Route exact path="/" component={HomePage} />
           <Route path="/shop" component={ShopPage} />
-          <Route path="/signin" component={SignInAndSignUpPage} />
+          <Route
+            exact
+            path="/signin"
+            render={() =>
+              this.props.currentUser ? (
+                <Redirect to="/" />
+              ) : (
+                <SignInAndSignUpPage />
+              )
+            }
+          />
         </Switch>
       </div>
     );
   }
 }
 
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser,
+});
+
 const mapDispatchToProps = dispatch => ({
   //
   setCurrectUser: user => dispatch(setCurrectUser(user)),
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
