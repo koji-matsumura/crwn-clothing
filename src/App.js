@@ -37,8 +37,7 @@ class App extends React.Component {
               },
             },
             () => {
-              // TODO: comment out before publishing
-              console.log(this.state);
+              //console.log(this.state);
             }
           );
         });
