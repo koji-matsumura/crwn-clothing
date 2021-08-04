@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component.jsx';
+import Header from './components/header/header.component.jsx';
 
 // In case of "<Route exact...",
 // a page will be shown if a URI user specified matches a path.
@@ -13,6 +14,7 @@ import ShopPage from './pages/shop/shop.component.jsx';
 function App() {
   return (
     <div>
+      <Header />
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/shop" component={ShopPage} />
