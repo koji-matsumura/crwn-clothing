@@ -8,7 +8,7 @@ import rootReducer from './root-reducer';
 const middlewares = [];
 
 // If stage is dev, logger function is enabled.
-if (ProcessingInstruction.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'development') {
   middlewares.push(logger);
 }
 
