@@ -33,24 +33,41 @@ class ShopPage extends React.Component {
     const { updateCollections } = this.props;
     const collectionRef = firestore.collection('collections');
 
-    collectionRef.onSnapshot(async snapShot => {
-      //console.log(snapShot.data());
-      const collectionsMap = convertCollectionsSnapshotToMap(snapShot);
+    collectionRef.get().then(snapshot => {
+      // Promise
+      const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
       updateCollections(collectionsMap);
       this.setState({ loading: false });
-
-      //console.log(collectionsMap);
-      // hats: {routeName: "hats", id: "TiBBtUxM5u8ZxNM75lqx", title: "Hats", items: Array(9)}
-      // jackets: {routeName: "jackets", id: "bCF7CHhJshXg6Jgz6hQ7", title: "Jackets", items: Array(5)}
-      // mens: {routeName: "mens", id: "KVKmvqaPYg6nljlPHnbL", title: "Mens", items: Array(6)}
-      // sneakers: {routeName: "sneakers", id: "w8nQNZQVz8YezNIwC5Io", title: "Sneakers", items: Array(8)}
-      // womens: {routeName: "womens", id: "PVEEVdLFzgw9TKRsDgzJ", title: "Womens", items: Array(7)}
     });
+
+    // Another Way#1
+    //
+    // fetch(
+    //   'https://firestore.googleapis.com/v1/projects/crwn-db-b1375/databases/(default)/documents/collections'
+    // )
+    //   .then(response => response.json())
+    //   .then(collections => console.log(collections));
+
+    // Another Way#2
+    //
+    // collectionRef.onSnapshot(async snapShot => {
+    //   //console.log(snapShot.data());
+    //   const collectionsMap = convertCollectionsSnapshotToMap(snapShot);
+    //   updateCollections(collectionsMap);
+    //   this.setState({ loading: false });
+
+    //   //console.log(collectionsMap);
+    //   // hats: {routeName: "hats", id: "TiBBtUxM5u8ZxNM75lqx", title: "Hats", items: Array(9)}
+    //   // jackets: {routeName: "jackets", id: "bCF7CHhJshXg6Jgz6hQ7", title: "Jackets", items: Array(5)}
+    //   // mens: {routeName: "mens", id: "KVKmvqaPYg6nljlPHnbL", title: "Mens", items: Array(6)}
+    //   // sneakers: {routeName: "sneakers", id: "w8nQNZQVz8YezNIwC5Io", title: "Sneakers", items: Array(8)}
+    //   // womens: {routeName: "womens", id: "PVEEVdLFzgw9TKRsDgzJ", title: "Womens", items: Array(7)}
+    // });
   }
 
   render() {
     const { match } = this.props;
-    const { loading } = this.state;
+    const { loading } = this.state; // DO NOT MIX UP state and props
 
     //console.log(match);
     return (
