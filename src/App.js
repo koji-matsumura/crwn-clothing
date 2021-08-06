@@ -11,11 +11,16 @@ import Header from './components/header/header.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import CheckoutPage from './pages/checkout/checkout.component';
 
-import { auth, createUserProfileDocument } from './firebase/firebase.utils';
+import {
+  auth,
+  createUserProfileDocument,
+  //addCollectionAnDocuments,
+} from './firebase/firebase.utils';
 import { setCurrectUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
-
+//import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 //
+
 class App extends React.Component {
   // constructor(props) {
   //   super(props);
@@ -26,12 +31,14 @@ class App extends React.Component {
   // }
 
   componentDidMount() {
+    //const { setCurrectUser, collectionsArray } = this.props;
     const { setCurrectUser } = this.props;
 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
+        // When shapshot is changed by deleteing, updating, inserting,...
         userRef.onSnapshot(snapShot => {
           //console.log(snapShot.data());
           this.props.setCurrectUser({
@@ -42,6 +49,10 @@ class App extends React.Component {
       } else {
         // set a null in case of no user logged in.
         setCurrectUser(userAuth);
+        // addCollectionAnDocuments(
+        //   'collections',
+        //   collectionsArray.map(({ title, items }) => ({ title, items }))
+        // );
       }
     });
 
@@ -92,6 +103,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
+  //collectionsArray: selectCollectionsForPreview,
 });
 
 const mapDispatchToProps = dispatch => ({
