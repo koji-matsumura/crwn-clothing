@@ -14,6 +14,8 @@ import CheckoutPage from './pages/checkout/checkout.component';
 import { selectCurrentUser } from './redux/user/user.selectors';
 import { checkUserSession } from './redux/user/user.actions';
 
+import CurrentUserContext from './contexts/current-user/current-user.context';
+
 // NOTE: need to destruct all props here.
 //class App extends React.Component {
 const App = ({ checkUserSession, currentUser }) => {
@@ -40,7 +42,9 @@ const App = ({ checkUserSession, currentUser }) => {
   // render() {
   return (
     <div>
-      <Header />
+      <CurrentUserContext.Provider value={currentUser}>
+        <Header />
+      </CurrentUserContext.Provider>
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route path="/shop" component={ShopPage} />
