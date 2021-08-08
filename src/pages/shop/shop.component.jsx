@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
@@ -7,53 +7,106 @@ import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container';
 import CollectionPageContainer from '../../pages/collection/collection.container';
 
-class ShopPage extends React.Component {
-  componentDidMount() {
-    const { fetchCollectionsStart } = this.props;
+const ShopPage = ({ fetchCollectionsStart, match }) => {
+  // class ShopPage extends React.Component {
+  // componentDidMount() {
+  //   const { fetchCollectionsStart } = this.props;
+  //   fetchCollectionsStart();
+  // }
+
+  // render() {
+  //   const { match } = this.props;
+
+  useEffect(() => {
+    // When either this props / the parent of this component's one is changed
+    // or the current use is updated, fetchCollectionStart will be called.
+    // So that avoiding to call twice (first call, and after checkUserSession is done),
+    // we need to add "[fetchCollectionsStart]" in 2nd arg of useEffect.
     fetchCollectionsStart();
-  }
+  }, [fetchCollectionsStart]);
 
-  render() {
-    const { match } = this.props;
-
-    return (
-      <div className="shop-page">
-        <Route
-          exact
-          path={`${match.path}`}
-          component={CollectionsOverviewContainer}
-          // render={props => (
-          //   <CollectionsOverviewWithSpinner
-          //     isLoading={isCollectionFetching}
-          //     {...props}
-          //   />
-          // )}
-        />
-        <Route
-          path={`${match.path}/:collectionId`}
-          component={CollectionPageContainer}
-          // render={props => (
-          //   <CollectionPageWithSpinner
-          //     isLoading={!isCollectionsLoaded}
-          //     {...props}
-          //   />
-          // )}
-        />
-      </div>
-    );
-  }
-}
-
-// const mapStateToProps = createStructuredSelector({
-//   //  isCollectionFetching: selectIsCollectionFetching,
-//   //isCollectionsLoaded: selectIsCollectionsLoaded,
-// });
+  return (
+    <div className="shop-page">
+      <Route
+        exact
+        path={`${match.path}`}
+        component={CollectionsOverviewContainer}
+      />
+      <Route
+        path={`${match.path}/:collectionId`}
+        component={CollectionPageContainer}
+      />
+    </div>
+  );
+  // }
+};
 
 const mapDispatchToProps = dispatch => ({
   fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
 });
 
 export default connect(null, mapDispatchToProps)(ShopPage);
+
+//
+// *** Before using Hooks
+//
+
+// import React from 'react';
+// import { Route } from 'react-router-dom';
+// import { connect } from 'react-redux';
+
+// import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
+
+// import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container';
+// import CollectionPageContainer from '../../pages/collection/collection.container';
+
+// class ShopPage extends React.Component {
+//   componentDidMount() {
+//     const { fetchCollectionsStart } = this.props;
+//     fetchCollectionsStart();
+//   }
+
+//   render() {
+//     const { match } = this.props;
+
+//     return (
+//       <div className="shop-page">
+//         <Route
+//           exact
+//           path={`${match.path}`}
+//           component={CollectionsOverviewContainer}
+//           // render={props => (
+//           //   <CollectionsOverviewWithSpinner
+//           //     isLoading={isCollectionFetching}
+//           //     {...props}
+//           //   />
+//           // )}
+//         />
+//         <Route
+//           path={`${match.path}/:collectionId`}
+//           component={CollectionPageContainer}
+//           // render={props => (
+//           //   <CollectionPageWithSpinner
+//           //     isLoading={!isCollectionsLoaded}
+//           //     {...props}
+//           //   />
+//           // )}
+//         />
+//       </div>
+//     );
+//   }
+// }
+
+// // const mapStateToProps = createStructuredSelector({
+// //   //  isCollectionFetching: selectIsCollectionFetching,
+// //   //isCollectionsLoaded: selectIsCollectionsLoaded,
+// // });
+
+// const mapDispatchToProps = dispatch => ({
+//   fetchCollectionsStart: () => dispatch(fetchCollectionsStart()),
+// });
+
+// export default connect(null, mapDispatchToProps)(ShopPage);
 
 //
 // import SHOP_DATA from './shop.data';

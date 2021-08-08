@@ -1,4 +1,4 @@
-import { useReducer } from 'react';
+//import { useReducer } from 'react';
 import UserActionTypes from './user.types';
 
 // export const setCurrectUser = user => ({

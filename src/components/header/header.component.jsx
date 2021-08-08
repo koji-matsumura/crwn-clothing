@@ -12,7 +12,7 @@ import {
   //  OptionDiv,
 } from './header.styles';
 
-import { auth } from '../../firebase/firebase.utils';
+//import { auth } from '../../firebase/firebase.utils';
 import CartIcon from '../cart-icon/cart-icon.component';
 import CartDropDown from '../cart-dropdown/cart-dropdown.component';
 import { selectCartHidden } from '../../redux/cart/cart.selectors';
