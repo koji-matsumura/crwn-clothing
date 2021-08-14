@@ -1,24 +1,19 @@
-import React, { useContext } from 'react';
-import CollectionItem from '../../components/collection-item/collection-item.component';
+import React from 'react';
+import { default as CollectionItem } from '../../components/collection-item/collection-item.container';
 import {
   CollectionPageContainer,
   CollectionTitle,
   CollectionItemsContainer,
 } from './collection.styles';
 
-import CollectionsContext from '../../contexts/collections/collections.context';
+//import CollectionsContext from '../../contexts/collections/collections.context';
 
-const CollectionPage = ({ match }) => {
-  const collections = useContext(CollectionsContext);
-  const collection = collections[match.params.collectionId];
+const CollectionPage = ({ collection }) => {
+  // const collections = useContext(CollectionsContext);
+  // const collection = collections[match.params.collectionId];
   const { title, items } = collection;
 
   return (
-    // <CollectionsContext.Consumer>
-    // {collections => {
-    // const collection = collections[match.params.collectionId];
-    // const { title, items } = collection;
-    // return (
     <CollectionPageContainer>
       <CollectionTitle>{title}</CollectionTitle>
       <CollectionItemsContainer>
@@ -27,13 +22,51 @@ const CollectionPage = ({ match }) => {
         ))}
       </CollectionItemsContainer>
     </CollectionPageContainer>
-    // );
-    // }}
-    // </CollectionsContext.Consumer>
   );
 };
 
 export default CollectionPage;
+
+//
+// *** Before using GraphQL
+//
+
+// import React, { useContext } from 'react';
+// import CollectionItem from '../../components/collection-item/collection-item.component';
+// import {
+//   CollectionPageContainer,
+//   CollectionTitle,
+//   CollectionItemsContainer,
+// } from './collection.styles';
+
+// import CollectionsContext from '../../contexts/collections/collections.context';
+
+// const CollectionPage = ({ match }) => {
+//   const collections = useContext(CollectionsContext);
+//   const collection = collections[match.params.collectionId];
+//   const { title, items } = collection;
+
+//   return (
+//     // <CollectionsContext.Consumer>
+//     // {collections => {
+//     // const collection = collections[match.params.collectionId];
+//     // const { title, items } = collection;
+//     // return (
+//     <CollectionPageContainer>
+//       <CollectionTitle>{title}</CollectionTitle>
+//       <CollectionItemsContainer>
+//         {items.map(item => (
+//           <CollectionItem key={item.id} item={item} />
+//         ))}
+//       </CollectionItemsContainer>
+//     </CollectionPageContainer>
+//     // );
+//     // }}
+//     // </CollectionsContext.Consumer>
+//   );
+// };
+
+// export default CollectionPage;
 
 //
 // *** In case of context API

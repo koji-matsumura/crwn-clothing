@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+//import { createStructuredSelector } from 'reselect';
 import { ReactComponent as Logo } from '../../assets/crown.svg';
 import {
   HeaderContainer,
@@ -9,23 +9,17 @@ import {
   OptionLink,
 } from './header.styles';
 
-import CartIcon from '../cart-icon/cart-icon.component';
-import CartDropDown from '../cart-dropdown/cart-dropdown.component';
-import { selectCartHidden } from '../../redux/cart/cart.selectors';
+// import CartIcon from '../cart-icon/cart-icon.component';
+import { default as CartIcon } from '../cart-icon/cart-icon.container';
+// import CartDropDown from '../cart-dropdown/cart-dropdown.component';
+import { default as CartDropDown } from '../cart-dropdown/cart-dropdown.container';
+//import { selectCartHidden } from '../../redux/cart/cart.selectors';
 import { signOutStart } from '../../redux/user/user.actions';
 import CurrentUserContext from '../../contexts/current-user/current-user.context';
-//import CartContext from '../../contexts/cart/cart.context';
-import { CartContext } from '../../providers/cart/cart.provider';
+//import { CartContext } from '../../providers/cart/cart.provider';
 
-// NOTE: App component provides currentUserContext, so we remove it from props.
-//
-//const Header = ({ hidden, signOutStart }) => {
-const Header = ({ signOutStart }) => {
-  // NOTE: Before using provider, we used only context instead.
-  // const [hidden, setHidden] = useState(true);
-  // const toggleHidden = () => setHidden(!hidden); // link to anonymous function defined in cart.context.js
-
-  const { hidden } = useContext(CartContext);
+const Header = ({ hidden, signOutStart }) => {
+  //const { hidden } = useContext(CartContext);
   const currentUser = useContext(CurrentUserContext);
 
   return (
@@ -43,9 +37,6 @@ const Header = ({ signOutStart }) => {
         ) : (
           <OptionLink to="/signin">Sign in</OptionLink>
         )}
-        {/* <CartContext.Provider value={{ hidden, toggleHidden }}>
-          <CartIcon />
-        </CartContext.Provider> */}
         <CartIcon />
       </OptionsContiner>
       {hidden ? null : <CartDropDown />}
@@ -53,15 +44,84 @@ const Header = ({ signOutStart }) => {
   );
 };
 
-const mapStateToProps = createStructuredSelector({
-  hidden: selectCartHidden,
-});
+// const mapStateToProps = createStructuredSelector({
+//   hidden: selectCartHidden,
+// });
 
 const mapDispatchToProps = dispatch => ({
   signOutStart: () => dispatch(signOutStart()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Header);
+export default connect(null, mapDispatchToProps)(Header);
+
+//
+// *** Before using GraphQL
+//
+
+// import React, { useContext, useState } from 'react';
+// import { connect } from 'react-redux';
+// import { createStructuredSelector } from 'reselect';
+// import { ReactComponent as Logo } from '../../assets/crown.svg';
+// import {
+//   HeaderContainer,
+//   LogoContainer,
+//   OptionsContiner,
+//   OptionLink,
+// } from './header.styles';
+
+// import CartIcon from '../cart-icon/cart-icon.component';
+// import CartDropDown from '../cart-dropdown/cart-dropdown.component';
+// import { selectCartHidden } from '../../redux/cart/cart.selectors';
+// import { signOutStart } from '../../redux/user/user.actions';
+// import CurrentUserContext from '../../contexts/current-user/current-user.context';
+// //import CartContext from '../../contexts/cart/cart.context';
+// import { CartContext } from '../../providers/cart/cart.provider';
+
+// // NOTE: App component provides currentUserContext, so we remove it from props.
+// //
+// //const Header = ({ hidden, signOutStart }) => {
+// const Header = ({ signOutStart }) => {
+//   // NOTE: Before using provider, we used only context instead.
+//   // const [hidden, setHidden] = useState(true);
+//   // const toggleHidden = () => setHidden(!hidden); // link to anonymous function defined in cart.context.js
+
+//   const { hidden } = useContext(CartContext);
+//   const currentUser = useContext(CurrentUserContext);
+
+//   return (
+//     <HeaderContainer>
+//       <LogoContainer to="/">
+//         <Logo className="logo" />
+//       </LogoContainer>
+//       <OptionsContiner>
+//         <OptionLink to="/shop">SHOP</OptionLink>
+//         <OptionLink to="/shop">CONTACT</OptionLink>
+//         {currentUser ? (
+//           <OptionLink as="div" onClick={signOutStart}>
+//             Sign out
+//           </OptionLink>
+//         ) : (
+//           <OptionLink to="/signin">Sign in</OptionLink>
+//         )}
+//         {/* <CartContext.Provider value={{ hidden, toggleHidden }}>
+//           <CartIcon />
+//         </CartContext.Provider> */}
+//         <CartIcon />
+//       </OptionsContiner>
+//       {hidden ? null : <CartDropDown />}
+//     </HeaderContainer>
+//   );
+// };
+
+// const mapStateToProps = createStructuredSelector({
+//   hidden: selectCartHidden,
+// });
+
+// const mapDispatchToProps = dispatch => ({
+//   signOutStart: () => dispatch(signOutStart()),
+// });
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Header);
 
 //
 // *** Before using context
